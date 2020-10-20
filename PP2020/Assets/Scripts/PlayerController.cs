@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public float jumpPower = 5f;
     public float maxRunSpeed = 5000f;
     public float standingContactDistance = .1f;
+    public float stopInputThreshold = .5f;
     public bool capVelocity = true;
 
     void Awake()
@@ -39,11 +40,12 @@ public class PlayerController : MonoBehaviour
 
     void ApplyInput()
     {
-        float xInput = Input.GetAxis("Horizontal");
+
+        float xInput = Input.GetAxisRaw("Horizontal");
         float yInput = Input.GetAxis("Vertical");
 
         //Left and right
-        float xForce = xInput * playerMoveSpeed * Time.deltaTime;
+        float xForce = Mathf.Sign(xInput) * playerMoveSpeed * Time.deltaTime;
         float yForce = 0;
 
         //Jumping
@@ -58,6 +60,9 @@ public class PlayerController : MonoBehaviour
         Vector2 force = new Vector2(xForce, yForce);
 
         playerRigidBody.AddForce(force, ForceMode2D.Impulse);
+
+        if (Mathf.Abs(xInput) <= stopInputThreshold)
+            playerRigidBody.velocity = new Vector2(0, playerRigidBody.velocity.y);
     }
 
     void CapVelocity()
