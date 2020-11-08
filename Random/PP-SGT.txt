@@ -1,0 +1,4 @@
+platformer ou fps
+
+tu as un but a accomplir, mais tu a des tics dont la fréquence augmente graduellement 
+(ou exponentiellement) et quand tu prend un médicament le timer reset
