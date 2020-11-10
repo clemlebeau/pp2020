@@ -65,6 +65,10 @@ public class CharacterController2D : MonoBehaviour
 
         transform.Translate(velocity * Time.deltaTime);
 
+        if (velocity.x != 0)
+        {
+            transform.localScale = new Vector3(Mathf.Sign(velocity.x), 1, 1);
+        }
 
         grounded = false;
 
@@ -73,7 +77,7 @@ public class CharacterController2D : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            if (hit == boxCollider)
+            if (hit == boxCollider || hit.isTrigger)
                 continue;
             ColliderDistance2D colliderDistance = hit.Distance(boxCollider);
 
@@ -81,6 +85,10 @@ public class CharacterController2D : MonoBehaviour
             {
                 transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
 
+                //if(hit.transform.position.y > gameObject.transform.position.y)
+                //{
+                //    velocity.y = 0; //set velocity to zero if the player collides with something above him to prevent "sticking" under something while jumping
+                //}
 
                 if (Vector2.Angle(colliderDistance.normal, Vector2.up) < 90 && velocity.y < 0)
                 {
