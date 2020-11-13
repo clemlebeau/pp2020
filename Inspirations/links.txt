@@ -2,4 +2,5 @@ player controller: https://www.roystan.net/articles/character-controller-2d.html
 scrolling background: http://staffwww.fullcoll.edu/dcraig/csharp/2D%20Scrolling%20Background%20in%20Unity.pdf
 camera movement smoothing: https://answers.unity.com/questions/1153326/does-anyone-know-the-script-for-a-smooth-camera-fo.html
 detect if player is at edge of camera: https://answers.unity.com/questions/964578/detect-whenever-the-player-is-near-the-edges-of-th.html
-
+cat walk animation gif: https://gfycat.com/complicateddecimalbushsqueaker
+cat walk still image: https://www.shutterstock.com/image-photo/walking-ginger-cat-profile-view-on-301307093
