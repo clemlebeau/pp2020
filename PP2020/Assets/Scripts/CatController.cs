@@ -96,7 +96,7 @@ public class CatController : MonoBehaviour
 
         grounded = false;
 
-        Collider2D[] hits = Physics2D.OverlapBoxAll(transform.position, boxCollider.size, 0);
+        Collider2D[] hits = Physics2D.OverlapBoxAll(boxCollider.transform.position, boxCollider.size * transform.localScale, 0);
         foreach (Collider2D hit in hits)
         {
             if(hit.gameObject == player)
