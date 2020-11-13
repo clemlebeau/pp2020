@@ -31,10 +31,13 @@ public class CatController : MonoBehaviour
     private bool grounded;
 
     private Vector2 velocity;
+
+    CharacterController2D playerController;
     private void Awake()
     {
         boxCollider = GetComponent<BoxCollider2D>();
         timeToJump = defaultTimeToJump;
+        playerController = player.GetComponent<CharacterController2D>();
     }
 
     private void Update()
@@ -62,7 +65,11 @@ public class CatController : MonoBehaviour
             timeToJump = defaultTimeToJump;
         }
 
-
+        if (!playerController.alive)
+        {
+            timeToJump = defaultTimeToJump;
+            moveInput = 0;
+        }
 
         float acceleration = grounded ? walkAcceleration : 0; //could be airAcceleration, depends
         float deceleration = groundDeceleration;
@@ -93,7 +100,7 @@ public class CatController : MonoBehaviour
         {
             if(hit.gameObject == player)
             {
-                Debug.Log("Kill player");
+                playerController.KillPlayer();
             }
             //if (hit == boxCollider || hit.isTrigger)
             //    continue;

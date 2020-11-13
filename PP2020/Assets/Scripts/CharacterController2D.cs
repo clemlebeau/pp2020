@@ -28,20 +28,28 @@ public class CharacterController2D : MonoBehaviour
 
     private bool grounded;
 
+    public bool alive;
+
+    public Color deadColor = new Color(198f / 255, 20f / 255, 20f / 255);
+
+    private SpriteRenderer playerSpriteRenderer;
+
     private void Awake()
     {
         boxCollider = GetComponent<BoxCollider2D>();
+        alive = true;
+        playerSpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
-        float moveInput = Input.GetAxisRaw("Horizontal");
+        float moveInput = alive ? Input.GetAxisRaw("Horizontal") : 0;//Only permit movement if player is alive
 
         if (grounded)
         {
             velocity.y = 0;
 
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") && alive)
             {
                 //Calculate the velocity required to achieve the target jump height with a derived known formula
                 velocity.y = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
@@ -96,5 +104,17 @@ public class CharacterController2D : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void KillPlayer()
+    {
+        alive = false;
+        playerSpriteRenderer.color = deadColor;
+    }
+
+    public void RevivePlayer()
+    {
+        alive = true;
+        playerSpriteRenderer.color = new Color(1,1,1);
     }
 }

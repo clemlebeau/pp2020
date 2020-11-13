@@ -420,6 +420,8 @@ MonoBehaviour:
   groundDeceleration: 70
   airDeceleration: 0
   jumpHeight: 2
+  alive: 0
+  deadColor: {r: 0.7764706, g: 0.078431375, b: 0.078431375, a: 1}
 --- !u!61 &1305334777
 BoxCollider2D:
   m_ObjectHideFlags: 0
