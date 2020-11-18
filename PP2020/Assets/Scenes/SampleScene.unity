@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -226,6 +227,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8628c72fb4871246b085d60f62b1c87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeMagnitude: 0.2
+  dampingSpeed: 1
 --- !u!1 &613677991
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +366,7 @@ SpriteShapeRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -524,6 +539,7 @@ GameObject:
   - component: {fileID: 1305334779}
   - component: {fileID: 1305334777}
   - component: {fileID: 1305334776}
+  - component: {fileID: 1305334778}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -577,6 +593,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.56509036, y: 1.2015734}
   m_EdgeRadius: 0
+--- !u!114 &1305334778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305334775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3de8f3cb5a2208f42a79a839c8bcd9ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minTime: 5
+  maxTime: 10
+  camera: {fileID: 519420031}
+  screenShakeDuration: 0.2
+  characterController: {fileID: 0}
 --- !u!212 &1305334779
 SpriteRenderer:
   m_ObjectHideFlags: 0
