@@ -8,6 +8,11 @@ public class PlayerTicController : MonoBehaviour
     public float minTime = 5f;
     public float maxTime = 10f;
     private float timeLeft;
+
+    public float minMoveTicTime = 1f;
+    public float maxMoveTicTime = 1.5f;
+
+
     public Camera camera;
 
     public float screenShakeDuration = 2f;
@@ -24,26 +29,36 @@ public class PlayerTicController : MonoBehaviour
 
     void Update()
     {
-        timeLeft -= Time.deltaTime;
-        if (timeLeft <= 0)
+        if (characterController.alive)
         {
-            Tic();
-            timeLeft = Random.Range(minTime, maxTime);
+            timeLeft -= Time.deltaTime;
+            if (timeLeft <= 0)
+            {
+                Tic();
+                timeLeft = Random.Range(minTime, maxTime);
+            }
         }
     }
 
     void Tic()
     {
-        Debug.Log("henlo je suis un tic moment yes moment");
         camera.GetComponent<ShakeBehavior>().TriggerScreenShake(screenShakeDuration);
-        int tic = Random.Range(0, 4);
+        int tic = Random.Range(0, 2);
         switch (tic)
         {
             case 0:
+                //Jump
+                characterController.ticJump = true;
                 break;
             case 1:
+                //Move left
+                characterController.ticMove = -1;
+                characterController.moveTicTime = Random.Range(minMoveTicTime, maxMoveTicTime);
                 break;
             case 2:
+                //Move right
+                characterController.ticMove = 1;
+                characterController.moveTicTime = Random.Range(minMoveTicTime, maxMoveTicTime);
                 break;
             case 3:
                 break;

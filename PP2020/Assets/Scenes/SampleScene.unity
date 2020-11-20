@@ -563,10 +563,13 @@ MonoBehaviour:
   walkAcceleration: 75
   airAcceleration: 15
   groundDeceleration: 70
-  airDeceleration: 0
+  airDeceleration: 2
   jumpHeight: 2
   alive: 0
   deadColor: {r: 0.7764706, g: 0.078431375, b: 0.078431375, a: 1}
+  ticJump: 0
+  ticMove: 0
+  moveTicTime: 0
 --- !u!61 &1305334777
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -607,6 +610,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minTime: 5
   maxTime: 10
+  minMoveTicTime: 0.2
+  maxMoveTicTime: 0.45
   camera: {fileID: 519420031}
   screenShakeDuration: 0.2
   characterController: {fileID: 0}

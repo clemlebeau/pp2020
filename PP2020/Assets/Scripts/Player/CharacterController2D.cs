@@ -34,6 +34,14 @@ public class CharacterController2D : MonoBehaviour
 
     private SpriteRenderer playerSpriteRenderer;
 
+    #region Tic variables
+
+    public bool ticJump = false;
+    public float ticMove = 0f;
+    public float moveTicTime;
+
+    #endregion
+
     private void Awake()
     {
         boxCollider = GetComponent<BoxCollider2D>();
@@ -41,15 +49,44 @@ public class CharacterController2D : MonoBehaviour
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private float GetHorizontalAxis()
+    {
+        if (!alive)
+            return 0;
+        float axis = Input.GetAxisRaw("Horizontal");
+        if(ticMove != 0)
+        {
+            if(moveTicTime > 0)
+            {
+                moveTicTime -= Time.deltaTime;
+                axis = ticMove;
+            }
+        }
+        return axis;
+    }
+
+    private bool GetJump()
+    {
+        if (!alive)
+            return false;
+        bool canJump = Input.GetButtonDown("Jump");
+        if (ticJump)
+        {
+            canJump = true;
+            ticJump = false;
+        }
+        return canJump;
+    }
+
     private void Update()
     {
-        float moveInput = alive ? Input.GetAxisRaw("Horizontal") : 0;//Only permit movement if player is alive
+        float moveInput = GetHorizontalAxis();
 
         if (grounded)
         {
             velocity.y = 0;
 
-            if (Input.GetButtonDown("Jump") && alive)
+            if (GetJump())
             {
                 //Calculate the velocity required to achieve the target jump height with a derived known formula
                 velocity.y = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
