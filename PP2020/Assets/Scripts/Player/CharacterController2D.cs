@@ -36,9 +36,9 @@ public class CharacterController2D : MonoBehaviour
 
     #region Tic variables
 
-    public bool ticJump = false;
-    public float ticMove = 0f;
-    public float moveTicTime;
+    PlayerTicController ticController;
+
+    
 
     #endregion
 
@@ -47,35 +47,36 @@ public class CharacterController2D : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         alive = true;
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
+        ticController = GetComponent<PlayerTicController>();
     }
 
     private float GetHorizontalAxis()
     {
-        if (!alive)
+        if (!alive || ticController.whistleTicTime > 0)
             return 0;
         float axis = Input.GetAxisRaw("Horizontal");
-        if(ticMove != 0)
+        if(ticController.ticMove != 0)
         {
-            if(moveTicTime > 0)
+            if(ticController.moveTicTime > 0)
             {
-                moveTicTime -= Time.deltaTime;
-                axis = ticMove;
+                axis = ticController.ticMove;
             }
         }
+        
         return axis;
     }
 
     private bool GetJump()
     {
-        if (!alive)
+        if (!alive || ticController.whistleTicTime > 0)
             return false;
-        bool canJump = Input.GetButtonDown("Jump");
-        if (ticJump)
+        bool willJump = Input.GetButtonDown("Jump");
+        if (ticController.ticJump)
         {
-            canJump = true;
-            ticJump = false;
+            willJump = true;
+            ticController.ticJump = false;
         }
-        return canJump;
+        return willJump;
     }
 
     private void Update()
@@ -156,3 +157,5 @@ public class CharacterController2D : MonoBehaviour
         playerSpriteRenderer.color = new Color(1,1,1);
     }
 }
+
+//allo^pipi
