@@ -52,13 +52,17 @@ public class PlayerTicController : MonoBehaviour
             if (timeLeft <= 0)
             {
                 Tic();
-                timeLeft = UnityEngine.Random.Range(minTime, maxTime);
+                ResetTicTime();
             }
 
             Whistle();
         }
     }
 
+    public void ResetTicTime()
+    {
+        timeLeft = UnityEngine.Random.Range(minTime, maxTime);
+    }
 
     void Whistle()
     {
