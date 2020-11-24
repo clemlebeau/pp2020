@@ -11,6 +11,9 @@ public class PlayerTicController : MonoBehaviour
     private float timeLeft;
 
     [NonSerialized]
+    public bool sideEffect = false;
+
+    [NonSerialized]
     public float whistleTicTime = 0f;
     public float defaultWhistleTicTime = 2f;
     public float minNoteSpawnTime = 0f;
@@ -96,7 +99,7 @@ public class PlayerTicController : MonoBehaviour
     void Tic()
     {
         camera.GetComponent<ShakeBehavior>().TriggerScreenShake(screenShakeDuration);
-        int tic = UnityEngine.Random.Range(0, 3);
+        int tic = UnityEngine.Random.Range(0, 3+1);
         switch (tic)
         {
             case 0:

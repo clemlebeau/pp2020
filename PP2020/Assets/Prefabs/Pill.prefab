@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aeeb6e23ece7e5459e265a8d7d21886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  playerName: Player
 --- !u!114 &480605103772629654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,5 +151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1364ba4a0345345861596ef05dc67e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
-  player: {fileID: 0}
+  cameraName: Camera
+  playerName: Player
+  minSideEffectDuration: 10
+  maxSideEffectDuration: 25
+  defaultProfile: {fileID: 11400000, guid: 359577e7ac675bc4a8f2f4d986dad827, type: 2}
+  blackAndWhiteProfile: {fileID: 11400000, guid: 46e4d9a1e019694479c23b9946dfd19f,
+    type: 2}
+  chromaticAberrationProfile: {fileID: 11400000, guid: 9b8b6994b4a0b0d41a0830bb97b8ecee,
+    type: 2}
+  negativeProfile: {fileID: 11400000, guid: e16ea6fe602866549aa1cfceefa185fb, type: 2}
