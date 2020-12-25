@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,8 @@ public class ShakeBehavior : MonoBehaviour
 
     public float dampingSpeed = 1f;
 
-    private Vector3 initialPosition;
+    [NonSerialized]
+    public Vector3 initialPosition;
 
     void Awake()
     {
@@ -27,7 +29,7 @@ public class ShakeBehavior : MonoBehaviour
     {
         if(shakeDuration > 0)
         {
-            transform.localPosition = initialPosition + Random.insideUnitSphere * shakeMagnitude;
+            transform.localPosition = initialPosition + UnityEngine.Random.insideUnitSphere * shakeMagnitude;
 
             shakeDuration -= Time.deltaTime * dampingSpeed;
         } else

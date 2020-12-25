@@ -52,7 +52,8 @@ public class PillController : MonoBehaviour
         if (spriteRenderer.enabled)
         {
             spriteRenderer.enabled = false; //Hides the pill to make it look like it was consumed, but it will be destroyed only after the side effects are finished.
-            //ticController.ResetTicTime();
+            ticController.ResetTicTime();
+            GameObject.Find(playerName).GetComponent<MusicController>().SwitchToConstantSpeed();
             SideEffects();
         }
     }
@@ -88,12 +89,14 @@ public class PillController : MonoBehaviour
             {
                 sideEffectTime -= Time.deltaTime;
                 ticController.ResetTicTime();
+
             }
             else
             {
                 postProcessVolume.profile = defaultProfile;
                 mainCamera.transform.rotation = Quaternion.AngleAxis(0, Vector3.zero);
                 ticController.sideEffect = pillActive = false;
+                GameObject.Find(playerName).GetComponent<MusicController>().SwitchToAccelerating();
                 Destroy(gameObject);
             }
         }

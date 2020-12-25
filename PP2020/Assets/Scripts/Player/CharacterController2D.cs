@@ -1,5 +1,6 @@
-﻿using UnityEditor.IMGUI.Controls;
+﻿using System;
 using UnityEngine;
+using UnityEngine.U2D;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class CharacterController2D : MonoBehaviour
@@ -24,6 +25,8 @@ public class CharacterController2D : MonoBehaviour
 
     private BoxCollider2D boxCollider;
 
+    private Animator animator;
+
     private Vector2 velocity;
 
     private bool grounded;
@@ -34,20 +37,43 @@ public class CharacterController2D : MonoBehaviour
 
     private SpriteRenderer playerSpriteRenderer;
 
+    public GameObject firstRespawnPoint;
+    [NonSerialized]
+    public GameObject respawnPoint;
+    
+    public float respawnTime = 5f;
+    float respawnTimer = 0;
+
+    public GameObject cat;
+    public float catDelay = 5f;
+    private float catSpawnTimer;
+    private bool catAlive = false;
+
+    [NonSerialized]
+    public bool gameEnded = false;
+
     #region Tic variables
 
     PlayerTicController ticController;
 
-    
+
 
     #endregion
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
         alive = true;
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
         ticController = GetComponent<PlayerTicController>();
+        respawnPoint = firstRespawnPoint;
+        catSpawnTimer = catDelay;
+    }
+
+    private void Start()
+    {
+        RevivePlayer();
     }
 
     private float GetHorizontalAxis()
@@ -55,14 +81,14 @@ public class CharacterController2D : MonoBehaviour
         if (!alive || ticController.whistleTicTime > 0)
             return 0;
         float axis = Input.GetAxisRaw("Horizontal");
-        if(ticController.ticMove != 0)
+        if (ticController.ticMove != 0)
         {
-            if(ticController.moveTicTime > 0)
+            if (ticController.moveTicTime > 0)
             {
                 axis = ticController.ticMove;
             }
         }
-        
+
         return axis;
     }
 
@@ -81,6 +107,28 @@ public class CharacterController2D : MonoBehaviour
 
     private void Update()
     {
+
+        if (respawnTimer > 0)
+        {
+            respawnTimer -= Time.deltaTime;
+        }
+        else if (!alive && respawnTimer <= 0)
+        {
+            RevivePlayer();
+        }
+
+        if (!catAlive)
+        {
+            if (catSpawnTimer > 0)
+            {
+                catSpawnTimer -= Time.deltaTime;
+            }
+            else if (respawnTimer <= 0)
+            {
+                SpawnCat();
+            }
+        }
+
         float moveInput = GetHorizontalAxis();
 
         if (grounded)
@@ -107,6 +155,8 @@ public class CharacterController2D : MonoBehaviour
             velocity.x = Mathf.MoveTowards(velocity.x, 0, deceleration * Time.deltaTime);
         }
 
+        animator.SetFloat("playerSpeed", Mathf.Abs(velocity.x));
+
         velocity.y += Physics2D.gravity.y * Time.deltaTime;
 
         transform.Translate(velocity * Time.deltaTime);
@@ -130,8 +180,15 @@ public class CharacterController2D : MonoBehaviour
 
             if (colliderDistance.isOverlapped)
             {
-                transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
-
+                
+                if (hit.bounds.center.y + hit.bounds.size.y / 2 > gameObject.GetComponent<Renderer>().bounds.center.y - gameObject.GetComponent<Renderer>().bounds.size.y)
+                {
+                    transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
+                }
+                else
+                {
+                    transform.Translate((colliderDistance.pointA - colliderDistance.pointB) * Time.deltaTime);
+                }
                 //if(hit.transform.position.y > gameObject.transform.position.y)
                 //{
                 //    velocity.y = 0; //set velocity to zero if the player collides with something above him to prevent "sticking" under something while jumping
@@ -147,14 +204,38 @@ public class CharacterController2D : MonoBehaviour
 
     public void KillPlayer()
     {
-        alive = false;
-        playerSpriteRenderer.color = deadColor;
+        if (alive)
+        {
+            alive = false;
+            playerSpriteRenderer.color = deadColor;
+
+            respawnTimer = respawnTime;
+        }
     }
 
     public void RevivePlayer()
     {
+        gameObject.transform.position = respawnPoint.transform.position;
         alive = true;
-        playerSpriteRenderer.color = new Color(1,1,1);
+        playerSpriteRenderer.color = new Color(1, 1, 1);
+
+        KillCat();
+        catSpawnTimer = catDelay;
+        catAlive = false;
+    }
+
+    public void KillCat()
+    {
+        cat.GetComponent<CatController>().enabled = false;
+        cat.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    public void SpawnCat()
+    {
+        catAlive = true;
+        cat.transform.position = respawnPoint.transform.position;
+        cat.GetComponent<CatController>().enabled = true;
+        cat.GetComponent<SpriteRenderer>().enabled = true;
     }
 }
 

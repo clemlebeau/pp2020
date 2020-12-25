@@ -32,9 +32,12 @@ public class CatController : MonoBehaviour
 
     private Vector2 velocity;
 
+    private Animator animator;
+
     CharacterController2D playerController;
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
         timeToJump = defaultTimeToJump;
         playerController = player.GetComponent<CharacterController2D>();
@@ -84,7 +87,11 @@ public class CatController : MonoBehaviour
             velocity.x = Mathf.MoveTowards(velocity.x, 0, deceleration * Time.deltaTime);
         }
 
+        animator.SetFloat("catSpeed", Mathf.Abs(velocity.x));
+
         velocity.y += Physics2D.gravity.y * Time.deltaTime;
+
+        animator.SetFloat("catJumpSpeed", Mathf.Abs(velocity.y));
 
         transform.Translate(velocity * Time.deltaTime);
 
@@ -96,16 +103,17 @@ public class CatController : MonoBehaviour
 
         grounded = false;
 
-        Collider2D[] hits = Physics2D.OverlapBoxAll(boxCollider.transform.position, boxCollider.size * transform.localScale, 0);
+        Collider2D[] hits = Physics2D.OverlapBoxAll(transform.position, boxCollider.size * transform.localScale, 0);
         foreach (Collider2D hit in hits)
         {
-            if(hit.gameObject == player)
+            if (hit.gameObject == player)
             {
                 playerController.KillPlayer();
             }
-            //if (hit == boxCollider || hit.isTrigger)
-            //    continue;
-            if(hit.gameObject.layer != 3)//Layer 3 is ground, so this if statement makes sure that the cat goes through everything except the ground, but there may be a problem with walls.
+            
+            if (hit == boxCollider || hit.isTrigger)
+                continue;
+            if (hit.gameObject.layer != 3)//Layer 3 is ground, so this if statement makes sure that the cat goes through everything except the ground, but there may be a problem with walls.
             {
                 continue;
             }
@@ -113,7 +121,7 @@ public class CatController : MonoBehaviour
 
             if (colliderDistance.isOverlapped)
             {
-                transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
+                transform.Translate((colliderDistance.pointA - colliderDistance.pointB));
 
                 if (Vector2.Angle(colliderDistance.normal, Vector2.up) < 90 && velocity.y < 0)
                 {
@@ -121,5 +129,7 @@ public class CatController : MonoBehaviour
                 }
             }
         }
+
+        animator.SetBool("grounded", grounded);
     }
 }

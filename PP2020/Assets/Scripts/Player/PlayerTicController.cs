@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController2D))]
+[RequireComponent(typeof(MusicController))]
 public class PlayerTicController : MonoBehaviour
 {
     public float minTime = 5f;
@@ -31,19 +32,21 @@ public class PlayerTicController : MonoBehaviour
     [NonSerialized]
     public float moveTicTime;
 
-
     public Camera camera;
 
     public float screenShakeDuration = 2f;
 
     public CharacterController2D characterController;
+    public MusicController musicController;
     void Awake()
     {
         characterController = GetComponent<CharacterController2D>();
+        musicController = GetComponent<MusicController>();
     }
     void Start()
     {
-        timeLeft = UnityEngine.Random.Range(minTime, maxTime);
+        ResetTicTime();
+        //timeLeft = UnityEngine.Random.Range(minTime, maxTime);
     }
 
     void Update()
@@ -64,7 +67,9 @@ public class PlayerTicController : MonoBehaviour
 
     public void ResetTicTime()
     {
-        timeLeft = UnityEngine.Random.Range(minTime, maxTime);
+        timeLeft = musicController.audioSource.clip.length;
+        //musicController.RestartSound();
+        //timeLeft = UnityEngine.Random.Range(minTime, maxTime);
     }
 
     void Whistle()
