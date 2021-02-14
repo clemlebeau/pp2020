@@ -8,12 +8,14 @@ public class PauseMenuController : MonoBehaviour
     public GameObject player;
 
     public Button resumeButton;
+    public Button restartButton;
     public Button quitButton;
     public GameObject pauseMenuPanel;
 
     void Awake()
     {
         pauseMenuPanel.SetActive(false);
+        restartButton.onClick.AddListener(delegate () { UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene"); });
         resumeButton.onClick.AddListener(delegate () { pauseMenuPanel.SetActive(false); });
         quitButton.onClick.AddListener(delegate () { Application.Quit(); });
     }
